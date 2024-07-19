@@ -1,35 +1,27 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/createUserDto';
-import { UpdatesUserDto } from './dto/updatesUserDto.dto';
-import { User } from './schemas/user.schema';
-import { UsersRepository } from './users.repository';
+import { InjectModel } from '@nestjs/mongoose';
+import { User, UserDocument } from './schemas/user.schema';
+import { Model } from 'mongoose';
+import { CreateUserDto } from './dto/create-user.dto';
+import { RolesService } from 'src/roles/roles.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private readonly usersRepository: UsersRepository) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    private readonly rolesService: RolesService,
+  ) {}
 
-  async getUserById(userId: string): Promise<User> {
-    return this.usersRepository.findOne({ userId });
+  async createUser(dto: CreateUserDto) {
+    const createdUser = await this.userModel.create(dto);
+
+    const userRole = await this.rolesService.getRoleByValue('USER');
+    createdUser.$set('roles', [userRole._id]);
+
+    return createdUser.save();
   }
 
   async getAllUsers(): Promise<User[]> {
-    return this.usersRepository.find({});
-  }
-
-  async createUser(user: CreateUserDto): Promise<User> {
-    const candidate: User = {
-      email: user.email,
-      password: user.password,
-      name: user.name,
-    };
-
-    return this.usersRepository.create(candidate);
-  }
-
-  async updateUser(
-    userId: string,
-    updatesUserDto: UpdatesUserDto,
-  ): Promise<User> {
-    return this.usersRepository.findOneAndUpdate({ userId }, updatesUserDto);
+    return this.userModel.find().populate('roles').exec();
   }
 }

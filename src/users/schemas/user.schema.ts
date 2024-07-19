@@ -1,18 +1,32 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { MongooseModule, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ApiProperty } from '@nestjs/swagger';
+import { Exclude } from 'class-transformer';
+import mongoose, { HydratedDocument, Types } from 'mongoose';
+import { Role } from 'src/roles/schemas/roles.schema';
 
-export type UserDocument = User & Document;
+export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
+  @ApiProperty({ type: String })
   @Prop({ required: true })
   name: string;
 
+  @ApiProperty({ type: String })
   @Prop({ required: true, unique: true })
   email: string;
 
+  @ApiProperty({ type: String })
   @Prop({ required: true })
+  @Exclude()
   password: string;
+
+  @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: Role.name })
+  roles: Role[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+export const UserShemaModule = MongooseModule.forFeature([
+  { name: User.name, schema: UserSchema },
+]);
