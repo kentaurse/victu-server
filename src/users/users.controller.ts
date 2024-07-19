@@ -1,33 +1,25 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
-import { CreateUserDto } from './dto/createUserDto';
-import { UpdatesUserDto } from './dto/updatesUserDto.dto';
-import { User } from './schemas/user.schema';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { User } from './schemas/user.schema';
 
-@Controller('/v1/users')
+@ApiTags('Users')
+@Controller('v1/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Get()
-  async getAllUsers(): Promise<User[]> {
-    return this.usersService.getAllUsers();
-  }
-
-  @Get(':userId')
-  async getUserById(@Param('userId') userId: string): Promise<User> {
-    return this.usersService.getUserById(userId);
-  }
-
+  @ApiOperation({ summary: 'Create a new user' })
+  @ApiResponse({ status: 200, type: User })
   @Post()
-  async createUser(@Body() createUser: CreateUserDto) {
-    return this.usersService.createUser(createUser);
+  createUser(@Body() userDto: CreateUserDto) {
+    return this.usersService.createUser(userDto);
   }
 
-  @Patch(':userId')
-  async updateUser(
-    @Body() updateUser: UpdatesUserDto,
-    @Param('userId') userId: string,
-  ) {
-    return this.usersService.updateUser(userId, updateUser);
+  @ApiOperation({ summary: 'Get all users' })
+  @ApiResponse({ status: 200, type: [User] })
+  @Get()
+  getAllUsers() {
+    return this.usersService.getAllUsers();
   }
 }
