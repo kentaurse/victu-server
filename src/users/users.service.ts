@@ -20,6 +20,7 @@ export class UsersService {
     const candidate: User = {
       email: user.email,
       password: user.password,
+      name: user.name,
     };
 
     return this.usersRepository.create(candidate);
