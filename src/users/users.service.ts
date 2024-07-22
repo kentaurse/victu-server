@@ -30,4 +30,8 @@ export class UsersService {
   async getUserByEmail(email: string) {
     return this.userModel.findOne({ email }).populate('roles').exec();
   }
+
+  async getUserById(id: string) {
+    return this.userModel.findOne({ _id: id }).populate('roles').exec();
+  }
 }
