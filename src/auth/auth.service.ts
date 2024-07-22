@@ -1,9 +1,14 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { LoginUserDto } from './dto/login-user.dto';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { hash } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 import { UserDocument } from 'src/users/schemas/user.schema';
 
 @Injectable()
@@ -16,7 +21,8 @@ export class AuthService {
   ) {}
 
   async login(userDto: LoginUserDto) {
-    return null;
+    const user = await this.validateUser(userDto);
+    return this.generateToken(user);
   }
 
   async signup(userDto: CreateUserDto) {
@@ -39,7 +45,7 @@ export class AuthService {
     return this.generateToken(user);
   }
 
-  async generateToken(user: UserDocument) {
+  private async generateToken(user: UserDocument) {
     const payload = {
       id: user._id,
       email: user.email,
@@ -47,5 +53,24 @@ export class AuthService {
     };
 
     return { token: this.jwtService.sign(payload) };
+  }
+
+  private async validateUser(userDto: LoginUserDto) {
+    const user = await this.usersService.getUserByEmail(userDto.email);
+
+    if (!user) {
+      throw new HttpException(
+        `User with email ${userDto.email} doesn't exist`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const isPasswordEquals = await compare(userDto.password, user.password);
+
+    if (!isPasswordEquals) {
+      throw new UnauthorizedException({ message: 'Password unvalid' });
+    }
+
+    return user;
   }
 }
