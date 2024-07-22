@@ -1,9 +1,10 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { RolesService } from './roles.service';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Role } from './schemas/roles.schema';
 import { CreaterRoleDto } from './dto/create-role.dto';
 
+@ApiTags('Roles')
 @Controller('v1/roles')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}

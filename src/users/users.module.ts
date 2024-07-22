@@ -8,5 +8,6 @@ import { RolesModule } from 'src/roles/roles.module';
   imports: [UserShemaModule, RolesModule],
   controllers: [UsersController],
   providers: [UsersService],
+  exports: [UsersService],
 })
 export class UsersModule {}
