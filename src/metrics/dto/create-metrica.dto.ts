@@ -22,4 +22,7 @@ export class CreaeteMetricaDto {
 
   @ApiProperty({ type: Activity })
   activity: Activity;
+
+  @ApiProperty({ type: String })
+  userId: string;
 }
