@@ -4,6 +4,9 @@ import { InitDatabaseConfig } from './shared/config/database/mongodb.config';
 import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { AuthModule } from './auth/auth.module';
+import { ProgramModule } from './program/program.module';
+import { MetricsModule } from './metrics/metrics.module';
+import { ActivityModule } from './activity/activity.module';
 
 @Module({
   imports: [
@@ -17,6 +20,9 @@ import { AuthModule } from './auth/auth.module';
     UsersModule,
     RolesModule,
     AuthModule,
+    ProgramModule,
+    MetricsModule,
+    ActivityModule,
   ],
   providers: [],
 })

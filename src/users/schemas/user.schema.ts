@@ -1,7 +1,8 @@
 import { MongooseModule, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
-import mongoose, { HydratedDocument, Types } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
+import { Metrica } from 'src/metrics/schemas/metrica.schema';
 import { Role } from 'src/roles/schemas/roles.schema';
 
 export type UserDocument = HydratedDocument<User>;
@@ -21,8 +22,13 @@ export class User {
   @Exclude()
   password: string;
 
+  @ApiProperty({ type: [Role] })
   @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: Role.name })
   roles: Role[];
+
+  @ApiProperty({ type: Metrica })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Metrica.name })
+  metrica: Metrica;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
