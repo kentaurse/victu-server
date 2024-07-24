@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { Metrica } from 'src/metrics/schemas/metrica.schema';
+import { Program } from 'src/program/schema/program.schema';
 import { Role } from 'src/roles/schemas/roles.schema';
 
 export type UserDocument = HydratedDocument<User>;
@@ -29,6 +30,10 @@ export class User {
   @ApiProperty({ type: Metrica })
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Metrica.name })
   metrica: Metrica;
+
+  @ApiProperty({ type: Program })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Program.name })
+  program: Program;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

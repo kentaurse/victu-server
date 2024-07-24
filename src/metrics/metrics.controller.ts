@@ -9,7 +9,7 @@ import { CreaeteMetricaDto } from './dto/create-metrica.dto';
 export class MetricsController {
   constructor(private readonly metricsService: MetricsService) {}
 
-  @ApiOperation({ summary: 'Create a new user' })
+  @ApiOperation({ summary: 'Create a new metrica' })
   @ApiResponse({ status: 200, type: Metrica })
   @Post()
   createMetrica(@Body() metricaDto: CreaeteMetricaDto) {

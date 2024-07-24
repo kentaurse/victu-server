@@ -14,6 +14,15 @@ export class MetricsService {
 
   async createMetrica(dto: CreaeteMetricaDto) {
     const createdMetrica = await this.metricaModel.create(dto);
+    const candidate = await this.usersService.getUserById(dto.userId);
+
+    if (!candidate) {
+      throw new HttpException('No such user', HttpStatus.BAD_REQUEST);
+    }
+
+    candidate.metrica = createdMetrica;
+    candidate.save();
+
     return createdMetrica;
   }
 
@@ -34,6 +43,19 @@ export class MetricsService {
   }
 
   async getMetricaByUserId(userId: string) {
-    
+    const candidate = await this.usersService.getUserById(userId);
+
+    if (!candidate) {
+      throw new HttpException('No such user', HttpStatus.BAD_REQUEST);
+    }
+
+    if (!candidate.metrica) {
+      throw new HttpException(
+        'User does not have a metrica',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return candidate.metrica;
   }
 }
