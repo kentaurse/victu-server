@@ -1,20 +1,21 @@
-import { MongooseModule, SchemaFactory } from '@nestjs/mongoose';
+import { MongooseModule,Prop, SchemaFactory } from '@nestjs/mongoose';
+import { ApiProperty } from '@nestjs/swagger';
 import { HydratedDocument } from 'mongoose';
-import { Gender } from 'src/shared/types/gender.enum';
 
-export type UserDocument = HydratedDocument<Program>;
+export type ProgramDocument = HydratedDocument<Program>;
 
 export class Program {
-  age: number;
-  height: number;
-  weight: number;
-  gender: Gender;
-  //   activity: IActivity;
-  goalWeight;
+  @ApiProperty({ type: Number })
+  @Prop({ required: true })
+  calories: number;
+
+  @ApiProperty({ type: Date })
+  @Prop({ required: true })
+  date: Date;
 }
 
 export const ProgramSchema = SchemaFactory.createForClass(Program);
 
-export const ProgramShemaModule = MongooseModule.forFeature([
+export const ProgramSchemaModule = MongooseModule.forFeature([
   { name: Program.name, schema: ProgramSchema },
 ]);
