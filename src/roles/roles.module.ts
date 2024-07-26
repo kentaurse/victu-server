@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { RolesController } from './roles.controller';
 import { RolesService } from './roles.service';
-import { RoleSchemaModule } from './schemas/roles.schema';
+import { RoleShemaModule } from './schemas/roles.schema';
 
 @Module({
-  imports: [RoleSchemaModule],
+  imports: [RoleShemaModule],
   controllers: [RolesController],
   providers: [RolesService],
   exports: [RolesService],

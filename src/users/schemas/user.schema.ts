@@ -38,6 +38,6 @@ export class User {
 
 export const UserSchema = SchemaFactory.createForClass(User);
 
-export const UserSсhemaModule = MongooseModule.forFeature([
+export const UserShemaModule = MongooseModule.forFeature([
   { name: User.name, schema: UserSchema },
 ]);
