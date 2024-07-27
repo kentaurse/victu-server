@@ -17,6 +17,6 @@ export class Role {
 
 export const RoleSchema = SchemaFactory.createForClass(Role);
 
-export const RoleSchemaModule = MongooseModule.forFeature([
+export const RoleShemaModule = MongooseModule.forFeature([
   { name: Role.name, schema: RoleSchema },
 ]);
