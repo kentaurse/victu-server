@@ -7,7 +7,7 @@ import { ProgramService } from './program.service';
 export class ProgramController {
   constructor(private readonly programService: ProgramService) {}
 
-  @ApiOperation({ summary: 'Create a program by user id' })
+  @ApiOperation({ summary: 'Get a program by user id' })
   @ApiResponse({ status: 200, type: Program })
   @Get('/:userId')
   getProgramByUserId(@Param('userId') userId: string) {
