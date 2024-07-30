@@ -17,6 +17,6 @@ export class Activity {
 
 export const ActivitySchema = SchemaFactory.createForClass(Activity);
 
-export const ActivityShemaModule = MongooseModule.forFeature([
+export const ActivitySсhemaModule = MongooseModule.forFeature([
   { name: Activity.name, schema: ActivitySchema },
 ]);
