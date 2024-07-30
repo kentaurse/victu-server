@@ -1,7 +1,6 @@
 import { MongooseModule, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { Activity } from 'src/activity/schema/activity.schema';
 
 export type MetricaDocument = HydratedDocument<Metrica>;
 
@@ -31,9 +30,9 @@ export class Metrica {
   @Prop({ required: true })
   finishDate: Date;
 
-  @ApiProperty({ type: Activity })
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Activity.name })
-  activity: Activity;
+  // @ApiProperty({ type: Activity })
+  // @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Activity.name })
+  // activity: Activity;
 }
 
 export const MetricaSchema = SchemaFactory.createForClass(Metrica);
