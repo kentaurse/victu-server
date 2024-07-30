@@ -6,7 +6,4 @@ export class CreateActivityDto {
 
   @ApiProperty({ type: String })
   description: string;
-
-  @ApiProperty({ type: String })
-  userId: string;
 }

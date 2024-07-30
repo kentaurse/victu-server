@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ActivityController } from './activity.controller';
 import { ActivityService } from './activity.service';
-import { ActivityShemaModule } from './schema/activity.schema';
+import { ActivitySсhemaModule } from './schema/activity.schema';
 
 @Module({
-  imports: [ActivityShemaModule],
+  imports: [ActivitySсhemaModule],
   controllers: [ActivityController],
   providers: [ActivityService],
 })
