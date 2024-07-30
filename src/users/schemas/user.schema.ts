@@ -5,6 +5,7 @@ import mongoose, { HydratedDocument } from 'mongoose';
 import { Metrica } from 'src/metrics/schemas/metrica.schema';
 import { Program } from 'src/program/schema/program.schema';
 import { Role } from 'src/roles/schemas/roles.schema';
+import {Activity} from "../../activity/schema/activity.schema";
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -34,6 +35,10 @@ export class User {
   @ApiProperty({ type: Program })
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Program.name })
   program: Program;
+
+  @ApiProperty({ type: Activity })
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Activity.name })
+  activity: Activity;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
