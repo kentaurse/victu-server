@@ -1,5 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Activity } from 'src/activity/schema/activity.schema';
 
 export class CreaeteMetricaDto {
   @ApiProperty({ type: String })
@@ -19,9 +18,6 @@ export class CreaeteMetricaDto {
 
   @ApiProperty({ type: Date })
   finishDate: Date;
-
-  @ApiProperty({ type: Activity })
-  activity: Activity;
 
   @ApiProperty({ type: String })
   userId: string;

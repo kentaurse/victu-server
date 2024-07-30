@@ -1,4 +1,4 @@
-import { MongooseModule,Prop, SchemaFactory } from '@nestjs/mongoose';
+import { MongooseModule, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { HydratedDocument } from 'mongoose';
 
