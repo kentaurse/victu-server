@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Activity, ActivityDocument } from './schema/activity.schema';
 import { Model } from 'mongoose';
 import { CreateActivityDto } from './dto/create-activity.dto';
+import { UpdateActivityDto } from './dto/update-activity-dto';
 
 @Injectable()
 export class ActivityService {
@@ -29,5 +30,18 @@ export class ActivityService {
     }
 
     return await this.activityModel.findOne({ _id: id }).exec();
+  }
+
+  async deleteActivtityById(id: string) {
+    await this.activityModel.deleteOne({ _id: id });
+  }
+
+  async updateActivityById(id: string, dto: UpdateActivityDto) {
+    const updatedActivity = await this.activityModel.findOneAndUpdate(
+      { _id: id },
+      dto,
+    );
+
+    return updatedActivity;
   }
 }

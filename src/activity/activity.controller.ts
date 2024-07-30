@@ -1,9 +1,17 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ActivityService } from './activity.service';
 import { Activity } from './schema/activity.schema';
 import { CreateActivityDto } from './dto/create-activity.dto';
-import { Metrica } from '../metrics/schemas/metrica.schema';
+import { UpdateActivityDto } from './dto/update-activity-dto';
 @ApiTags('Activity')
 @Controller('v1/activity')
 export class ActivityController {
@@ -28,5 +36,22 @@ export class ActivityController {
   @Get('/:id')
   getActivityById(@Param('id') id: string) {
     return this.activityService.getActivityById(id);
+  }
+
+  @ApiOperation({ summary: 'Delete activity by id' })
+  @ApiResponse({ status: 200 })
+  @Delete('/:id')
+  deleteActivityById(@Param('id') id: string) {
+    this.activityService.deleteActivtityById(id);
+  }
+
+  @ApiOperation({ summary: 'Update activity by id' })
+  @ApiResponse({ status: 200 })
+  @Put('/:id')
+  updateActivityById(
+    @Param('id') id: string,
+    @Body() updateActivityDto: UpdateActivityDto,
+  ) {
+    return this.activityService.updateActivityById(id, updateActivityDto);
   }
 }
