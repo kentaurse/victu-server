@@ -6,4 +6,7 @@ export class CreateActivityDto {
 
   @ApiProperty({ type: String })
   description: string;
+
+  @ApiProperty({ type: Number })
+  scale: number;
 }

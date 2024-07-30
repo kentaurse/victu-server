@@ -1,6 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreaeteMetricaDto {
+export class CreateMetricaDto {
+  @ApiProperty({ type: Number })
+  age: number;
+
   @ApiProperty({ type: String })
   gender: string;
 
@@ -18,6 +21,9 @@ export class CreaeteMetricaDto {
 
   @ApiProperty({ type: Date })
   finishDate: Date;
+
+  @ApiProperty({ type: String })
+  activityId: string;
 
   @ApiProperty({ type: String })
   userId: string;

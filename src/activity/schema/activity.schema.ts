@@ -13,6 +13,10 @@ export class Activity {
   @ApiProperty({ type: String })
   @Prop({ required: true })
   description: string;
+
+  @ApiProperty({ type: Number })
+  @Prop({ required: true })
+  scale: number;
 }
 
 export const ActivitySchema = SchemaFactory.createForClass(Activity);

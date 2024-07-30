@@ -22,6 +22,7 @@ export class ActivityService {
 
   async getActivityById(id: string) {
     const isActivityExist = await this.activityModel.exists({ _id: id });
+
     if (!isActivityExist) {
       throw new HttpException(
         { message: 'No such activity' },
