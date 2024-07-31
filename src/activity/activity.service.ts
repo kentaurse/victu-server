@@ -20,6 +20,14 @@ export class ActivityService {
     return await this.activityModel.find().exec();
   }
 
+  async getActivityByValue(value: string) {
+    return await this.activityModel.findOne({ value }).exec();
+  }
+
+  async getActivityByModel(activity: Activity) {
+    return await this.activityModel.findOne(activity).exec();
+  }
+
   async getActivityById(id: string) {
     const isActivityExist = await this.activityModel.exists({ _id: id });
 

@@ -17,6 +17,8 @@ export class UsersService {
 
     const userRole = await this.rolesService.getRoleByValue('USER');
     createdUser.$set('roles', [userRole._id]);
+    createdUser.metrics = null;
+    createdUser.program = null;
 
     createdUser.save();
 
@@ -24,14 +26,23 @@ export class UsersService {
   }
 
   async getAllUsers() {
-    return this.userModel.find().populate('roles').exec();
+    return this.userModel
+      .find()
+      .populate(['roles', 'metrics', 'program'])
+      .exec();
   }
 
   async getUserByEmail(email: string) {
-    return this.userModel.findOne({ email }).populate('roles').exec();
+    return this.userModel
+      .findOne({ email })
+      .populate(['roles', 'metrics', 'program'])
+      .exec();
   }
 
   async getUserById(id: string) {
-    return this.userModel.findOne({ _id: id }).populate('roles').exec();
+    return this.userModel
+      .findOne({ _id: id })
+      .populate(['roles', 'metrics', 'program'])
+      .exec();
   }
 }

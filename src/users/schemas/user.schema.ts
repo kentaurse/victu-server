@@ -2,10 +2,9 @@ import { MongooseModule, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import mongoose, { HydratedDocument } from 'mongoose';
-import { Metrica } from 'src/metrics/schemas/metrica.schema';
+import { Metrics } from 'src/metrics/schemas/metrica.schema';
 import { Program } from 'src/program/schema/program.schema';
 import { Role } from 'src/roles/schemas/roles.schema';
-import {Activity} from "../../activity/schema/activity.schema";
 
 export type UserDocument = HydratedDocument<User>;
 
@@ -28,17 +27,13 @@ export class User {
   @Prop({ type: [mongoose.Schema.Types.ObjectId], ref: Role.name })
   roles: Role[];
 
-  @ApiProperty({ type: Metrica })
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Metrica.name })
-  metrica: Metrica;
+  @ApiProperty({ type: Metrics })
+  @Prop({ type: mongoose.Schema.Types.Mixed, ref: Metrics.name })
+  metrics: Metrics;
 
   @ApiProperty({ type: Program })
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Program.name })
   program: Program;
-
-  @ApiProperty({ type: Activity })
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: Activity.name })
-  activity: Activity;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
