@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MetricsService } from './metrics.service';
 import { Metrica } from './schemas/metrica.schema';
-import { CreaeteMetricaDto } from './dto/create-metrica.dto';
+import { CreateMetricaDto } from './dto/create-metrica.dto';
 
 @ApiTags('Metrics')
 @Controller('v1/metrics')
@@ -12,7 +12,7 @@ export class MetricsController {
   @ApiOperation({ summary: 'Create a new metrica' })
   @ApiResponse({ status: 200, type: Metrica })
   @Post()
-  createMetrica(@Body() metricaDto: CreaeteMetricaDto) {
+  createMetrica(@Body() metricaDto: CreateMetricaDto) {
     return this.metricsService.createMetrica(metricaDto);
   }
 
