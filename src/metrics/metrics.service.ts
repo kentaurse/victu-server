@@ -2,18 +2,33 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Metrica, MetricaDocument } from './schemas/metrica.schema';
 import { Model } from 'mongoose';
-import { CreaeteMetricaDto } from './dto/create-metrica.dto';
+import { CreateMetricaDto } from './dto/create-metrica.dto';
 import { UsersService } from 'src/users/users.service';
+import { ActivityService } from 'src/activity/activity.service';
 
 @Injectable()
 export class MetricsService {
   constructor(
     @InjectModel(Metrica.name) private metricaModel: Model<MetricaDocument>,
     private readonly usersService: UsersService,
+    private readonly activityService: ActivityService,
   ) {}
 
-  async createMetrica(dto: CreaeteMetricaDto) {
-    const createdMetrica = await this.metricaModel.create(dto);
+  async createMetrica(dto: CreateMetricaDto) {
+    const activity = await this.activityService.getActivityById(dto.activityId);
+
+    const newMetrica: Metrica = {
+      age: dto.age,
+      gender: dto.gender,
+      height: dto.height,
+      weight: dto.weight,
+      goalWeight: dto.goalWeight,
+      startDate: dto.startDate,
+      finishDate: dto.finishDate,
+      activity: activity,
+    };
+
+    const createdMetrica = await this.metricaModel.create(newMetrica);
     const candidate = await this.usersService.getUserById(dto.userId);
 
     if (!candidate) {
