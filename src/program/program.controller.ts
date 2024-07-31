@@ -2,6 +2,7 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Program } from './schema/program.schema';
 import { ProgramService } from './program.service';
+import { Delete } from '@nestjs/common/decorators';
 
 @Controller('v1/program')
 export class ProgramController {
@@ -16,7 +17,7 @@ export class ProgramController {
 
   @ApiOperation({ summary: 'Delete a program by id' })
   @ApiResponse({ status: 200, type: Program })
-  @Get('/:id')
+  @Delete('/:id')
   deleteProgramById(@Param('id') id: string) {
     return this.programService.deleteProgramById(id);
   }
