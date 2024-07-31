@@ -7,5 +7,6 @@ import { ActivitySсhemaModule } from './schema/activity.schema';
   imports: [ActivitySсhemaModule],
   controllers: [ActivityController],
   providers: [ActivityService],
+  exports: [ActivityService],
 })
 export class ActivityModule {}
