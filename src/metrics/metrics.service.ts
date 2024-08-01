@@ -21,6 +21,8 @@ export class MetricsService {
   ) {}
 
   async createMetrica(dto: CreateMetricaDto) {
+    const sd = new Date(dto.startDate);
+    const fd = new Date(dto.finishDate);
     const activity = await this.activityService.getActivityById(dto.activityId);
 
     const newMetrica: Metrica = {
