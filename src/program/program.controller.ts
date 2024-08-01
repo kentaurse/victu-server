@@ -1,9 +1,10 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Program } from './schema/program.schema';
 import { ProgramService } from './program.service';
 import { Delete } from '@nestjs/common/decorators';
 
+@ApiTags('Program')
 @Controller('v1/program')
 export class ProgramController {
   constructor(private readonly programService: ProgramService) {}
