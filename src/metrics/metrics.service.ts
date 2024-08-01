@@ -23,9 +23,12 @@ export class MetricsService {
   ) {}
 
   async createMetrica(dto: CreateMetricaDto) {
+    const sd = new Date(dto.startDate);
+    const fd = new Date(dto.finishDate);
     const activity = await this.activityService.getActivityById(dto.activityId);
     const isGenderValid = GENDERS.includes(dto.gender.toUpperCase());
-    const isDateValid = dto.startDate.getTime() < dto.finishDate.getTime();
+
+    const isDateValid = sd.getTime() < fd.getTime();
     const isGoalWeightValid = Math.abs(dto.weight - dto.goalWeight) < 10;
 
     if (!isGenderValid) {
