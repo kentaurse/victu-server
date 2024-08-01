@@ -1,6 +1,11 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Metrica, MetricaDocument } from './schemas/metrica.schema';
+import { Metrics, MetricaDocument } from './schemas/metrica.schema';
 import { Model } from 'mongoose';
 import { CreateMetricaDto } from './dto/create-metrica.dto';
 import { UsersService } from 'src/users/users.service';
@@ -9,8 +14,9 @@ import { ActivityService } from 'src/activity/activity.service';
 @Injectable()
 export class MetricsService {
   constructor(
-    @InjectModel(Metrica.name) private metricaModel: Model<MetricaDocument>,
+    @InjectModel(Metrics.name) private metricaModel: Model<MetricaDocument>,
     private readonly usersService: UsersService,
+    private readonly activityService: ActivityService,
     private readonly activityService: ActivityService,
   ) {}
 
@@ -35,14 +41,14 @@ export class MetricsService {
       throw new HttpException('No such user', HttpStatus.BAD_REQUEST);
     }
 
-    candidate.metrica = createdMetrica;
+    candidate.metrics = createdMetrica;
     candidate.save();
 
     return createdMetrica;
   }
 
   async getAllMetrics() {
-    return await this.metricaModel.find().exec();
+    return await this.metricaModel.find().populate('activity').exec();
   }
 
   async getMetricaById(id: string) {
@@ -64,13 +70,30 @@ export class MetricsService {
       throw new HttpException('No such user', HttpStatus.BAD_REQUEST);
     }
 
-    if (!candidate.metrica) {
+    if (!candidate.metrics) {
       throw new HttpException(
         'User does not have a metrica',
         HttpStatus.BAD_REQUEST,
       );
     }
 
-    return candidate.metrica;
+    return candidate.metrics;
+  }
+
+  async deleteMetricaById(id: string) {
+    return this.metricaModel.deleteOne({ _id: id }).exec();
+  }
+
+  async updateMetricaById(id: string, updateDto: UpdateMetricaDto) {
+    const metrica = await this.metricaModel
+      .findByIdAndUpdate({ _id: id }, updateDto, { new: true })
+      .populate('activity')
+      .exec();
+
+    if (!metrica) {
+      throw new NotFoundException();
+    }
+
+    return metrica;
   }
 }

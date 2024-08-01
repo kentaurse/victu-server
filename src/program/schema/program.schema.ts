@@ -1,9 +1,10 @@
-import { MongooseModule, Prop, SchemaFactory } from '@nestjs/mongoose';
+import { MongooseModule, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { HydratedDocument } from 'mongoose';
 
 export type ProgramDocument = HydratedDocument<Program>;
 
+@Schema()
 export class Program {
   @ApiProperty({ type: Number })
   @Prop({ required: true })

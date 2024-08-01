@@ -12,6 +12,7 @@ export class ProgramService {
   constructor(
     @InjectModel(Program.name) private programModel: Model<ProgramDocument>,
     private readonly usersService: UsersService,
+    private readonly activityService: ActivityService,
   ) {}
 
   async getProgramByUserId(userId: string) {
@@ -20,7 +21,8 @@ export class ProgramService {
       throw new HttpException('No such user', HttpStatus.BAD_REQUEST);
     }
 
-    const metrica = user.metrica;
+    const metrica = user.metrics;
+
     if (!metrica) {
       throw new HttpException(
         'User does not have a metrica',
