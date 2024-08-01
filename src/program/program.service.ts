@@ -31,26 +31,35 @@ export class ProgramService {
       );
     }
 
-    const userProgram = user.program;
+    const userProgram = user.program as ProgramDocument;
     const currentDate = new Date();
+    const programDto = await this.getProgramByMetrica(metrica);
 
     if (
       userProgram !== undefined &&
       userProgram?.date !== undefined &&
       currentDate.toDateString() === userProgram.date.toDateString()
     ) {
-      return userProgram;
+      const updatedProgram = await this.programModel.findOneAndUpdate(
+        { _id: userProgram.id },
+        { calories: programDto.calories },
+        {
+          new: true,
+        },
+      );
+
+      return updatedProgram;
     }
 
-    const program = await this.createProgramByMetrica(metrica);
+    const newProgram = await this.createProgram(programDto);
 
-    user.program = program;
+    user.program = newProgram;
     user.save();
 
-    return program;
+    return newProgram;
   }
 
-  private async createProgramByMetrica(metrica: Metrics) {
+  private async getProgramByMetrica(metrica: Metrics) {
     const calories = await this.calcualteDailyCalories(metrica);
     const date = new Date();
 
@@ -59,7 +68,7 @@ export class ProgramService {
       date,
     };
 
-    return await this.createProgram(dto);
+    return dto;
   }
 
   async createProgram(dto: CreateProgramDto) {

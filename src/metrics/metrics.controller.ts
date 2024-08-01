@@ -1,8 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { MetricsService } from './metrics.service';
 import { Metrics } from './schemas/metrica.schema';
 import { CreateMetricaDto } from './dto/create-metrica.dto';
+import { UpdateMetricaDto } from './dto/update-metrica.dto';
 
 @ApiTags('Metrics')
 @Controller('v1/metrics')
@@ -42,5 +51,12 @@ export class MetricsController {
   @Delete('/:id')
   deleteMetricaById(@Param('id') id: string) {
     return this.metricsService.deleteMetricaById(id);
+  }
+
+  @ApiOperation({ summary: 'Update metrica by id' })
+  @ApiResponse({ status: 200 })
+  @Patch('/:id')
+  updateMetricaById(@Param('id') id: string, @Body() dto: UpdateMetricaDto) {
+    return this.metricsService.updateMetricaById(id, dto);
   }
 }
