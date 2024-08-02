@@ -1,7 +1,5 @@
 ## Victu - online diet and fitness service to manage your daily activities and calories.
 
-# Here is a REST API server written in Nest.js and MongoDB. The documentation for CRUD operations listed in swagger endpoint.
-
 ## Documentation
 
 ```bash
