@@ -3,9 +3,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Program, ProgramDocument } from './schema/program.schema';
 import { Model } from 'mongoose';
 import { UsersService } from 'src/users/users.service';
-import { Metrica } from 'src/metrics/schemas/metrica.schema';
+import { Metrics } from 'src/metrics/schemas/metrica.schema';
 import { Gender } from 'src/shared/types/gender.enum';
 import { CreateProgramDto } from './dto/create-program.dto';
+import { ActivityService } from 'src/activity/activity.service';
 
 @Injectable()
 export class ProgramService {
@@ -30,23 +31,36 @@ export class ProgramService {
       );
     }
 
-    const userProgram = user.program;
+    const userProgram = user.program as ProgramDocument;
     const currentDate = new Date();
+    const programDto = await this.getProgramByMetrica(metrica);
 
-    if (currentDate.toDateString() === userProgram.date.toDateString()) {
-      return userProgram;
+    if (
+      userProgram !== undefined &&
+      userProgram?.date !== undefined &&
+      currentDate.toDateString() === userProgram.date.toDateString()
+    ) {
+      const updatedProgram = await this.programModel.findOneAndUpdate(
+        { _id: userProgram.id },
+        { calories: programDto.calories },
+        {
+          new: true,
+        },
+      );
+
+      return updatedProgram;
     }
 
-    const program = await this.createProgramByMetrica(metrica);
+    const newProgram = await this.createProgram(programDto);
 
-    user.program = program;
+    user.program = newProgram;
     user.save();
 
-    return program;
+    return newProgram;
   }
 
-  private async createProgramByMetrica(metrica: Metrica) {
-    const calories = this.calcualteDailyCalories(metrica);
+  private async getProgramByMetrica(metrica: Metrics) {
+    const calories = await this.calcualteDailyCalories(metrica);
     const date = new Date();
 
     const dto: CreateProgramDto = {
@@ -54,30 +68,34 @@ export class ProgramService {
       date,
     };
 
-    return await this.creatProgram(dto);
+    return dto;
   }
 
-  async creatProgram(dto: CreateProgramDto) {
-    return await this.programModel.create(dto);
+  async createProgram(dto: CreateProgramDto) {
+    const program = await this.programModel.create(dto);
+    return program;
   }
 
   async deleteProgramById(id: string) {
     return this.programModel.deleteOne({ _id: id });
   }
 
-  private calcualteDailyCalories(metrica: Metrica) {
+  private async calcualteDailyCalories(metrica: Metrics) {
     const normalCalories = 2200;
     const { weight, height, age, activity, gender } = metrica;
+    const fetchedActivity = await this.activityService.getActivityByModel(
+      activity,
+    );
 
     if (gender === Gender.MALE) {
       const bmr = 10 * weight + 6.25 * height - 5 * age + 5;
-      const resultCalories = bmr * activity.scale;
+      const resultCalories = bmr * fetchedActivity.scale;
       return resultCalories;
     }
 
     if (gender === Gender.FEMALE) {
       const bmr = 10 * weight + 6.25 * height - 5 * age - 161;
-      const resultCalories = bmr * activity.scale;
+      const resultCalories = bmr * fetchedActivity.scale;
       return resultCalories;
     }
 
