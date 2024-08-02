@@ -10,9 +10,6 @@ import { Model } from 'mongoose';
 import { CreateMetricaDto } from './dto/create-metrica.dto';
 import { UsersService } from 'src/users/users.service';
 import { ActivityService } from 'src/activity/activity.service';
-import { UpdateMetricaDto } from './dto/update-metrica.dto';
-
-const GENDERS = ['MALE', 'FEMALE'];
 
 @Injectable()
 export class MetricsService {
@@ -20,41 +17,17 @@ export class MetricsService {
     @InjectModel(Metrics.name) private metricaModel: Model<MetricaDocument>,
     private readonly usersService: UsersService,
     private readonly activityService: ActivityService,
+    private readonly activityService: ActivityService,
   ) {}
 
   async createMetrica(dto: CreateMetricaDto) {
     const sd = new Date(dto.startDate);
     const fd = new Date(dto.finishDate);
     const activity = await this.activityService.getActivityById(dto.activityId);
-    const isGenderValid = GENDERS.includes(dto.gender.toUpperCase());
 
-    const isDateValid = sd.getTime() < fd.getTime();
-    const isGoalWeightValid = Math.abs(dto.weight - dto.goalWeight) < 10;
-
-    if (!isGenderValid) {
-      throw new HttpException(
-        'Incorrect gender type, must be (Male, Female)',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
-    if (!isDateValid) {
-      throw new HttpException(
-        'Finish date must be after start date',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
-    if (!isGoalWeightValid) {
-      throw new HttpException(
-        'The current weight must not differ from the goal weight by 10 kg',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-
-    const newMetrica = {
+    const newMetrica: Metrica = {
       age: dto.age,
-      gender: dto.gender.toUpperCase(),
+      gender: dto.gender,
       height: dto.height,
       weight: dto.weight,
       goalWeight: dto.goalWeight,
