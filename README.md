@@ -2,6 +2,12 @@
 
 Here is a REST API server written in Nest.js and MongoDB. The documentation for CRUD operations listed in swagger endpoint.
 
+## Base URL
+
+```bash
+https://victu-api.up.railway.app
+```
+
 ## Documentation
 
 ```bash
