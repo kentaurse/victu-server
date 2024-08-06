@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { ProgramModule } from './program/program.module';
 import { MetricsModule } from './metrics/metrics.module';
 import { ActivityModule } from './activity/activity.module';
+import { ExercisesModule } from './exercises/exercises.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { ActivityModule } from './activity/activity.module';
     ProgramModule,
     MetricsModule,
     ActivityModule,
+    ExercisesModule,
   ],
   providers: [],
 })
