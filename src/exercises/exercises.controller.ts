@@ -1,9 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ExercisesService } from './exercises.service';
 import { Exercise } from './schema/exercise.schema';
 import { CreateExerciseDto } from './dto/create-exercise.dto';
 
+@ApiTags('Exercises')
 @Controller('/v1/exercises')
 export class ExercisesController {
   constructor(private readonly exerciseService: ExercisesService) {}

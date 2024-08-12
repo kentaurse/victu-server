@@ -12,6 +12,7 @@ import { ActivityService } from './activity.service';
 import { Activity } from './schema/activity.schema';
 import { CreateActivityDto } from './dto/create-activity.dto';
 import { UpdateActivityDto } from './dto/update-activity-dto';
+
 @ApiTags('Activity')
 @Controller('v1/activity')
 export class ActivityController {
