@@ -17,6 +17,7 @@ import { ExercisesModule } from './exercises/exercises.module';
       password: process.env.MONGO_PASSWORD,
       database: process.env.MONGO_DATABASE,
       cluster: process.env.MONGO_CLUSTER,
+      key: process.env.MONGO_KEY,
     }),
     UsersModule,
     RolesModule,

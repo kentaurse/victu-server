@@ -8,7 +8,11 @@ async function bootstrap() {
 
   const app = await NestFactory.create(AppModule);
 
-  app.enableCors();
+  app.enableCors({
+    origin: 'https://victu.vercel.app',
+    methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
+    credentials: true,
+  });
   app.setGlobalPrefix('api');
 
   const swaggerDocs = initSwaggerDocs(app);

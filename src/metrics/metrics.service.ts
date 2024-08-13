@@ -23,6 +23,13 @@ export class MetricsService {
   ) {}
 
   async createMetrica(dto: CreateMetricaDto) {
+    const candidate = await this.usersService.getUserById(dto.userId);
+
+    if (candidate.metrics) {
+      const createdMetrica = candidate.metrics as MetricaDocument;
+      await this.metricaModel.deleteOne({ id: createdMetrica.id });
+    }
+
     const sd = new Date(dto.startDate);
     const fd = new Date(dto.finishDate);
     const activity = await this.activityService.getActivityById(dto.activityId);
@@ -64,7 +71,6 @@ export class MetricsService {
     };
 
     const createdMetrica = await this.metricaModel.create(newMetrica);
-    const candidate = await this.usersService.getUserById(dto.userId);
 
     if (!candidate) {
       throw new HttpException('No such user', HttpStatus.BAD_REQUEST);
@@ -106,7 +112,7 @@ export class MetricsService {
       );
     }
 
-    return candidate.metrics;
+    return candidate.metrics as MetricaDocument;
   }
 
   async deleteMetricaById(id: string) {
